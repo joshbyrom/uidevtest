@@ -1,8 +1,14 @@
 var stories = new Array();
 
-var current = 0;
-var last = -1;
+var current = -1;
 
+
+function get_url_parameter(name) {
+    // source : http://stackoverflow.com/questions/1403888/get-url-parameter-with-jquery
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+}
+
+// loader object
 var loader = new Object();
 
 // story view
@@ -81,7 +87,7 @@ loader.load_list_view = function() {
     story = stories[i];
     
     $("#list_view_list").append("<li id=\"list_view_element" + i + "\">");
-    $("#list_view_element" + i).append('<a href="?' + story.url_path + '" onClick="loader.load(' + i + ');"><img src="' + story.lead_photo_image_thumb + '"> </img></a>');
+    $("#list_view_element" + i).append('<a href="?story=' + story.url_path + '" onClick="loader.load();"><img src="' + story.lead_photo_image_thumb + '"> </img></a>');
     $("#list_view_element" + i).append("<div>");
     $("#list_view_element" + i).append('<a href ="' + story.url_path + '">' + story.title + "</a>");
     $("#list_view_element" + i).append(story.summary);
@@ -97,12 +103,12 @@ loader.load_list_view = function() {
 
 
 // main load function
-loader.load = function(next) {
+loader.load = function() {
   if(stories.length <= 0)
     loader.load_data();
   
-  last = current;
-  current = next;  // out of index range means in list view
+  current = loader.get_index_from_url();  // out of index range means in list view
+  console.log(current);
   
   if(current < 0 || current >= stories.length) {
     $("#story_view").hide();
@@ -123,14 +129,14 @@ loader.load = function(next) {
   $("#story_view").show();
 };
 
-function get_url_parameter(name) {
-    // source : http://stackoverflow.com/questions/1403888/get-url-parameter-with-jquery
-    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
-}
-
-loader.get_index_from_url = function(url) {
+loader.get_index_from_url = function() {
   var story_url = get_url_parameter('story');
+  if(story_url == null) return -1;
+  
   for(var i = 0; i < stories.length; ++i) {
-    
+    if(stories[i].url_path == story_url)
+      return i;
   }
+  
+  return -1;
 }
