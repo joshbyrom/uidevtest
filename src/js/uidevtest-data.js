@@ -1,4 +1,4 @@
-{
+var data = {
     "objects": [{
         "author": ["Gail Williford"],
         "categories_name": ["Local","Watersports"],
@@ -75,4 +75,4 @@
         "updated": "2012-09-04T10:46:32-07:00",
         "url_path": "/news/news/local/forest-fire-near-los-angeles-could-burn-week/nR3Hg/"
     }]
-}
+};
