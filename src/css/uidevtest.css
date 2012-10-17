@@ -1,0 +1,38 @@
+body {
+  font-family: arial;
+}
+
+ol {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+.thumb_container {
+  
+}
+
+.headline_container {
+  
+}
+
+#datetime {
+  font-size: 14px;
+  color: #444444;
+}
+
+#top_links li {
+  display:inline;
+  padding-right: 20px;
+}
+
+#social li {
+  display:inline;
+  padding-right: 20px;
+}
+
+#social li {
+  display:inline;
+  padding-right: 20px;
+}

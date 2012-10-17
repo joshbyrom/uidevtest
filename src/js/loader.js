@@ -34,7 +34,7 @@ loader.load_data = function() {
 };
 
 loader.load_header = function() {
-  $("#top_links_list").html('<li id="home"><a>HOME</a></li><li>></li><li><a id = "news">NEWS</a></li>');
+  $("#top_links_list").html('<li><a href="./index.html">HOME</a></li><li>></li><li><a id = "news">NEWS</a></li></li>');
 };
 
 loader.load_headline = function() {
@@ -55,7 +55,7 @@ loader.load_social = function() {
       result += "<a>" + names[i] + "</a></li>";
   }
   
-  $("#social_stuff").html(result);
+  $("#social").html(result);
 };
 
 loader.load_image = function() {
@@ -87,9 +87,9 @@ loader.load_list_view = function() {
     story = stories[i];
     
     $("#list_view_list").append("<li id=\"list_view_element" + i + "\">");
-    $("#list_view_element" + i).append('<a href="?story=' + story.url_path + '" onClick="loader.load();"><img src="' + story.lead_photo_image_thumb + '"> </img></a>');
-    $("#list_view_element" + i).append("<div>");
-    $("#list_view_element" + i).append('<a href ="' + story.url_path + '">' + story.title + "</a>");
+    $("#list_view_element" + i).append('<div class="thumb_container"><a class="thumb" href="?story=' + story.url_path + '" onClick="loader.load();"><img src="' + story.lead_photo_image_thumb + '"> </img></a>');
+    $("#list_view_element" + i).append('</div><div class="headline_container">');
+    $("#list_view_element" + i).append('<a class="headline" href ="?story=' + story.url_path + '">' + story.title + "</a>");
     $("#list_view_element" + i).append(story.summary);
     $("#list_view_element" + i).append(story.formatted_publish_date + '<br>' +
                            story.formatted_updated_date);
