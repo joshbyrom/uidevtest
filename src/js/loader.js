@@ -70,11 +70,37 @@ loader.load_social = function() {
   var result = '<div id= "' + class_str + '"><ul>';
   
   for(var i = 0; i < 4; ++i){
-      result += "<li class=\"float_left\"><div class=\"float_left\"><div class=\"crop\" ><img id=\"social_image_" + i + "\" src=\"../images/uidevtest-sprites.png\"></img></div>";
+      result += "<li id=\"social_link_" + i + "\" class=\"float_left\"><div class=\"float_left\"><div class=\"crop\" ><img id=\"social_image_" + i + "\" src=\"../images/uidevtest-sprites.png\"></img></div>";
       result += names[i] + "</div></li>";
   }
   result += "</ul></div>";
   $("#social").html(result);
+  
+  if(loader.should_render_large_view()) {
+    var li, img;
+    for(var i = 0; i < names.length; ++i) {
+      li = $("#social_link_" + i);
+      img = $('#social_image_' + i);
+        
+      li.mouseover((function(image) {
+        return function() {
+          if(loader.should_render_large_view()) {
+            image.attr('class', 'no_filters');
+          }
+        }
+      })(img));
+      
+      li.mouseout((function(image) {
+        return function() {
+          if(loader.should_render_large_view()) {
+            image.attr('class', 'greyscale');
+          }
+        }
+      })(img));
+      
+      img.attr('class', 'greyscale');
+    }
+  }
 };
 
 loader.load_image = function() {
@@ -217,11 +243,9 @@ loader.handle_dates_headline_position = function() {
   }
 }
 loader.handle_large_view_article = function(content, author) {
-  var markup = '<div class="columns">' +
-                 '<div class="keeptogether">by ' +
-                   '<div class="author_name">' + author + '</div>' +
-                   '<div>' + content + '</div>' +
-                 '</div>' +
+  var markup = '<div class="columns">by ' +
+                 '<div class="author_name">' + author + '</div>' +
+                 '<div>' + content + '</div>' +
                '</div>';
              
   $("#author").html('');
