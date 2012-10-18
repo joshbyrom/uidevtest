@@ -243,8 +243,9 @@ loader.handle_dates_headline_position = function() {
   }
 }
 loader.handle_large_view_article = function(content, author) {
-  var markup = '<div class="columns">by ' +
+  var markup = 'by ' +
                  '<div class="author_name">' + author + '</div>' +
+               '<div class="columns">' +
                  '<div>' + content + '</div>' +
                '</div>';
              
