@@ -77,11 +77,22 @@ div[id='story_headline'] {
   font-size: 24px;
 }
 
-li[id^='list_view_element_'] {
+li[class^='list_view_element'] {
   float:left;
   clear:left;
   
   max-width: 480px;
+}
+
+a[class^='headline'] {
+  font-weight: bold;
+  font-size: 16px;
+  color: #036dbe;
+}
+
+div[class^='thumb_'] {
+  float:left;
+  max-width: 135px;
 }
 
 #headline a {

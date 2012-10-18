@@ -83,29 +83,49 @@ loader.load_article = function() {
   $("#article").html(content);
 }
 
+// helper method to format a str of the categories
+loader.get_categories_string_from_story = function(story) {
+  var categories = story.categories_name || [];
+  var categories_str = "";
+  
+  for(var j = 0; j < categories.length; ++j) {
+      categories_str += categories[j] + ', '
+  }
+  
+  return categories_str.substring(0, categories_str.length - 2);
+}
+
+
 // list view functions
 loader.load_list_view = function() {  
-  $("#list_view").html("<ul id=\"list_view_list\">");
-  
-  var story, id;
+  var story, id, categories_str;
+  var markup = "<ul id=\"list_view_list\">";
   
   // normally might want to only render a certain amount
   for(var i = 0; i < stories.length; ++i) {
     story = stories[i];
+    categories_str = loader.get_categories_string_from_story(story);
     
     id = "list_view_element_" + i;
-    $("#list_view_list").append('<li class="list_view_element" id="' + id + "\">");
-    $("#" + id).append('<div class="thumb_container"><a class="thumb" href="?story=' + story.url_path + '" onClick="loader.load();"><img src="' + story.lead_photo_image_thumb + '"> </img></a>');
-    $("#" + id).append('</div><div class="headline_container">');
-    $("#" + id).append('<a class="headline" href ="?story=' + story.url_path + '">' + story.title + "</a>");
-    $("#" + id).append(story.summary);
-    $("#" + id).append(story.formatted_publish_date + '<br>' +
-                           story.formatted_updated_date);
-    $("#" + id).append("</div>");
-    $("#list_view_list").append("</li>");
+    markup += '<li class="list_view_element" id="' + id + '">' 
+    + '          <div class="thumb_container">' 
+    + '             <a class="thumb" href="?story=' + story.url_path + '" onClick="loader.load();">' 
+    + '               <img src="' + story.lead_photo_image_thumb + '"> </img>' 
+    + '             </a>' 
+    + '           </div>' 
+    + '           <div class="headline_container">' 
+    + '             <a class="headline" href ="?story=' + story.url_path + '">' + story.title + '</a>' 
+    + '             <div id="categories">' + categories_str + ' / ' + story.summary 
+    + '             </div>' 
+    + '           <ul id="list_datetime">' 
+    + '             <li>' + story.formatted_publish_date + '</li>' 
+    + '             <li>' + story.formatted_updated_date + '</li>' 
+    + '           </ul>' 
+    + '           </div>' 
+    + '</li>';
   }
   
-  $("#list_view").append("</ul>");
+  $("#list_view").html(markup + "</ul>");
 }
 
 
