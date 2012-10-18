@@ -34,11 +34,13 @@ loader.load_data = function() {
 };
 
 loader.load_header = function() {
-  $("#top_links_list").html('<li><a href="./index.html">HOME</a></li><li>></li><li><a id = "news">NEWS</a></li></li>');
+  // TODO :: send breadcrumbs parameters
+  $("#top_links_list").html('<li><a class="story_link" href="./index.html">HOME</a></li><li id="breadcrumb">></li>' +
+                            '    <li><a class="story_link" id = "news">NEWS</a></li></li>');
 };
 
 loader.load_headline = function() {
-  $("#headline").html(stories[current].title);
+  $("#story_headline").html(stories[current].title);
 }
 
 loader.load_dates = function() {
@@ -47,57 +49,63 @@ loader.load_dates = function() {
 }
 
 loader.load_social = function() {
-  var names = ["COMMENT", "SHARE", "FAVORITE", "VOTE"];
-  var result = ""
+  var names = ['<a class="float_right" href="#">COMMENT<a>', 
+               '<a class="float_right" href="#">SHARE<a>', 
+               '<a class="float_right" href="#">FAVORITE<a>', 
+               '<a class="float_right" href="#">VOTE<a>'];
+  var result = '<ul class="social">';
   
   for(var i = 0; i < 4; ++i){
-      result += "<li id=\"social_link\"><img src=\"../images/uidevtest-sprites.png\"></img>";
-      result += "<a>" + names[i] + "</a></li>";
+      result += "<li id=\"social_link_" + i + "\"><div class=\"float_left\"><div class=\"crop\" ><img id=\"social_image_" + i + "\" src=\"../images/uidevtest-sprites.png\"></img></div>";
+      result += names[i] + "</div></li>";
   }
-  
+  result += "</ul>";
   $("#social").html(result);
 };
 
 loader.load_image = function() {
   var url = stories[current].lead_photo_image_url;
-  var caption = stories[current].lead_photo_caption;
-  var credit = stories[current].lead_photo_credit;
+  var caption = stories[current].lead_photo_caption || "";
+  var credit = stories[current].lead_photo_credit || "";
   
   $("#image").html("<img src=\"" + url + "\"></img>");
-  $("#caption").html(caption);
+  $("#caption").html("" + caption);
   $("#credit").html(credit);
+  
+  console.log(caption);
 };
 
 loader.load_article = function() {
   var content = stories[current].story;
-  var author = stories[current].author;
+  var author = stories[current].author || "un-named source";
   
-  $("#author").html = author;
+  $("#author").html('by <div class="author_name">' + author + "</div>");
   $("#article").html(content);
 }
 
 // list view functions
 loader.load_list_view = function() {  
-  $("#list_view").html("<ol id=\"list_view_list\">");
+  $("#list_view").html("<ul id=\"list_view_list\">");
   
-  var story;
+  var story, id;
   
   // normally might want to only render a certain amount
   for(var i = 0; i < stories.length; ++i) {
     story = stories[i];
     
-    $("#list_view_list").append("<li id=\"list_view_element" + i + "\">");
-    $("#list_view_element" + i).append('<div class="thumb_container"><a class="thumb" href="?story=' + story.url_path + '" onClick="loader.load();"><img src="' + story.lead_photo_image_thumb + '"> </img></a>');
-    $("#list_view_element" + i).append('</div><div class="headline_container">');
-    $("#list_view_element" + i).append('<a class="headline" href ="?story=' + story.url_path + '">' + story.title + "</a>");
-    $("#list_view_element" + i).append(story.summary);
-    $("#list_view_element" + i).append(story.formatted_publish_date + '<br>' +
+    id = "list_view_element_" + i;
+    $("#list_view_list").append('<li class="list_view_element" id="' + id + "\">");
+    $("#" + id).append('<div class="thumb_container"><a class="thumb" href="?story=' + story.url_path + '" onClick="loader.load();"><img src="' + story.lead_photo_image_thumb + '"> </img></a>');
+    $("#" + id).append('</div><div class="headline_container">');
+    $("#" + id).append('<a class="headline" href ="?story=' + story.url_path + '">' + story.title + "</a>");
+    $("#" + id).append(story.summary);
+    $("#" + id).append(story.formatted_publish_date + '<br>' +
                            story.formatted_updated_date);
-    $("#list_view_element").append("</div>");
+    $("#" + id).append("</div>");
     $("#list_view_list").append("</li>");
   }
   
-  $("#list_view").append("</ol>");
+  $("#list_view").append("</ul>");
 }
 
 
