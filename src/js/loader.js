@@ -242,6 +242,7 @@ loader.handle_dates_headline_position = function() {
     }
   }
 }
+
 loader.handle_large_view_article = function(content, author) {
   var markup = 'by ' +
                  '<div class="author_name">' + author + '</div>' +
