@@ -45,8 +45,15 @@ loader.load_data = function() {
 
 loader.load_header = function() {
   // TODO :: send breadcrumbs parameters
-  $("#top_links_list").html('<li><a class="story_link" href="./index.html">HOME</a></li><li id="breadcrumb">></li>' +
-                            '    <li><a class="story_link" id = "news">NEWS</a></li></li>');
+  $("#top_links_list").html('<li>' +
+                              '<a class="story_link" href="./index.html">HOME</a>' +
+                            '</li>' +
+                            '<li id="breadcrumb">>' +
+                            '</li>' +
+                            '<li>' +
+                              '<a class="story_link" id = "news">NEWS</a>' +
+                            '</li>' +
+                            '</li>');
 };
 
 loader.load_headline = function() {
@@ -70,7 +77,12 @@ loader.load_social = function() {
   var result = '<div id= "' + class_str + '"><ul>';
   
   for(var i = 0; i < 4; ++i){
-      result += "<li id=\"social_link_" + i + "\" class=\"float_left\"><div class=\"float_left\"><div class=\"crop\" ><img id=\"social_image_" + i + "\" src=\"../images/uidevtest-sprites.png\"></img></div>";
+      result += "<li id=\"social_link_" + i + "\" class=\"float_left\">" +
+                  "<div class=\"float_left\">" +
+                    "<div class=\"crop\" >" +
+                      "<img id=\"social_image_" + i + "\" src=\"../images/uidevtest-sprites.png\">" +
+                      "</img>" +
+                    "</div>";
       result += names[i] + "</div></li>";
   }
   result += "</ul></div>";
