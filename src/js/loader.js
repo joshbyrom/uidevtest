@@ -11,6 +11,16 @@ function get_url_parameter(name) {
 // loader object
 var loader = new Object();
 
+loader.get_large_viewport_value = function() {
+  return 480;
+}
+
+// 
+loader.should_render_large_view = function() {
+  var viewport_width = $(window).width();
+  return viewport_width >= loader.get_large_viewport_value();
+};
+
 // story view
 loader.load_data = function() {
   for(var i in data.objects) {
@@ -49,14 +59,18 @@ loader.load_dates = function() {
 }
 
 loader.load_social = function() {
-  var names = ['<a class="float_right" href="#">COMMENT<a>', 
-               '<a class="float_right" href="#">SHARE<a>', 
-               '<a class="float_right" href="#">FAVORITE<a>', 
-               '<a class="float_right" href="#">VOTE<a>'];
-  var result = '<ul class="social">';
+  var class_str = 'social_link_small';
+  if(loader.should_render_large_view()) 
+    class_str = 'social_link_large';
+  
+  var names = ['<a href="#">COMMENT<a>', 
+               '<a href="#">SHARE<a>', 
+               '<a href="#">FAVORITE<a>', 
+               '<a href="#">VOTE<a>'];
+  var result = '<ul class="' + class_str + '">';
   
   for(var i = 0; i < 4; ++i){
-      result += "<li id=\"social_link_" + i + "\"><div class=\"float_left\"><div class=\"crop\" ><img id=\"social_image_" + i + "\" src=\"../images/uidevtest-sprites.png\"></img></div>";
+      result += "<li class=\"inline\"><div class=\"float_left\"><div class=\"crop\" ><img id=\"social_image_" + i + "\" src=\"../images/uidevtest-sprites.png\"></img></div>";
       result += names[i] + "</div></li>";
   }
   result += "</ul>";
@@ -72,12 +86,15 @@ loader.load_image = function() {
   $("#caption").html("" + caption);
   $("#credit").html(credit);
   
-  console.log(caption);
+  loader.position_credit(false);
 };
 
 loader.load_article = function() {
   var content = stories[current].story;
   var author = stories[current].author || "un-named source";
+  
+  if (loader.should_render_large_view())
+    return loader.handle_large_view_article(content, author);
   
   $("#author").html('by <div class="author_name">' + author + "</div>");
   $("#article").html(content);
@@ -100,26 +117,30 @@ loader.get_categories_string_from_story = function(story) {
 loader.load_list_view = function() {  
   var story, id, categories_str;
   var markup = "<ul id=\"list_view_list\">";
-  
+  var actual_headline = "";
   // normally might want to only render a certain amount
   for(var i = 0; i < stories.length; ++i) {
     story = stories[i];
     categories_str = loader.get_categories_string_from_story(story);
     
+    actual_headline = story.title;
+    if(actual_headline.length > 35)
+      actual_headline = actual_headline.substring(0, 35) + '...';
+    
     id = "list_view_element_" + i;
     markup += '<li class="list_view_element" id="' + id + '">' 
     + '          <div class="thumb_container">' 
-    + '             <a class="thumb" href="?story=' + story.url_path + '" onClick="loader.load();">' 
-    + '               <img src="' + story.lead_photo_image_thumb + '"> </img>' 
+    + '             <a href="?story=' + story.url_path + '" onClick="loader.load();">' 
+    + '               <img class="thumb" src="' + story.lead_photo_image_thumb + '"> </img>' 
     + '             </a>' 
     + '           </div>' 
     + '           <div class="headline_container">' 
-    + '             <a class="headline" href ="?story=' + story.url_path + '">' + story.title + '</a>' 
+    + '             <a class="headline" href ="?story=' + story.url_path + '">' + actual_headline + '</a>' 
     + '             <div id="categories">' + categories_str + ' / ' + story.summary 
     + '             </div>' 
     + '           <ul id="list_datetime">' 
-    + '             <li>' + story.formatted_publish_date + '</li>' 
-    + '             <li>' + story.formatted_updated_date + '</li>' 
+    + '             <li>Posted: ' + story.formatted_publish_date + '</li>' 
+    + '             <li>Updated: ' + story.formatted_updated_date + '</li>' 
     + '           </ul>' 
     + '           </div>' 
     + '</li>';
@@ -136,7 +157,6 @@ loader.load = function() {
     loader.load_data();
   
   current = loader.get_index_from_url();  // out of index range means in list view
-  console.log(current);
   
   if(current < 0 || current >= stories.length) {
     $("#story_view").hide();
@@ -146,10 +166,13 @@ loader.load = function() {
   }
   
   $("#list_view").hide();
-  
+    
   loader.load_header();
+  
   loader.load_dates();
   loader.load_headline();
+  loader.handle_dates_headline_position();
+  
   loader.load_social();
   loader.load_image();
   loader.load_article();
@@ -167,4 +190,41 @@ loader.get_index_from_url = function() {
   }
   
   return -1;
+}
+
+
+loader.handle_dates_headline_position = function() {
+  var date_position = $("#datetime").offset();
+  var headline_position = $("#story_headline").offset();
+  
+  if(loader.should_render_large_view()) {
+    if(headline_position.top > date_position.top) {
+      jQuery("#datetime").before(jQuery("#story_headline"));
+    }
+  } else {
+    if(headline_position.top < date_position.top) {
+      jQuery("#datetime").after(jQuery("#story_headling"));
+    }
+  }
+}
+loader.handle_large_view_article = function(content, author) {
+  
+  loader.position_credit(true);
+}
+
+loader.position_credit = function(large_view) {
+  var img = $('#image');
+  var img_pos = img.offset();
+  var credit = $('#credit');
+  
+  console.log(img.offset());
+  if(large_view) {
+    credit.css({ "top": img_pos.top + img.height() - credit.height() - 8, 
+                 "left" : img_pos.left + img.width() - credit.width() - 8});
+    credit.css({"background" : '#ffffff', 'opacity' : 0.6});
+  } else {
+    credit.css({ "top": img_pos.top + img.height(), 
+                 "left" : img_pos.left + img.width() - credit.width() - 8});
+    credit.css({"background" : '#0', 'opacity' : 1});
+  }
 }

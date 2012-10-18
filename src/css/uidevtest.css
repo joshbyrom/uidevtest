@@ -11,101 +11,135 @@ ul {
   margin: 0;
 }
 
-div[id^='credit'] {
-  font-size:11px;
-  color:#898989;
+div#caption {
+  clear:left;
 }
 
-div[id^='author'] {
+div#credit {
+  font-size:11px;
+  color:#898989;
+  position:absolute;
+  
+}
+
+div#author {
   padding-top: 12px;
 }
 
-div[class^='author_name'] {
+div.author_name {
   color:#036dbe;
   display:inline;
 }
 
-ul[class^='social'] {  
-  
-}
-
-div[class^='crop'] {
+div.crop {
   float:left;
   max-width: 20px;
   overflow-x: hidden;
 }
 
-img[id^='social_image_1']  {
+img#social_image_1  {
   margin-left:-20px;
 }
-img[id^='social_image_2'] {
+img#social_image_2 {
   margin-left:-40px;
 }
-img[id^='social_image_3'] {
+img#social_image_3 {
   margin-left:-60px;
 }
 
-li[id^='social_link_'] {
-  display:inline;
+div.social {
 }
 
-div[class^='float_left'] {
+ul.social_link_large {
+}
+
+*.inline {
+}
+
+*.float_left {
   float:left;
 }
 
-div[id^='top_'] {
+*.float_right {
+  float:right;
+}
+
+div#top_links {
   border-color: #cdcdcd;
   border-top: 1px solid;
   border-bottom: 1px solid;  
 }
 
-div[id^='image'] {
+div#image {
   clear:left;
+  float:left;
 }
 
-a[class^='float_right'] {
-  
-}
-
-a[class^='story_'] {
+a.story_links {
   color: #036dbe;
   font-size: 14px;
   font-weight: bold;
 }
 
-div[id='story_headline'] {
+div#story_headline {
   font-size: 24px;
 }
 
-li[class^='list_view_element'] {
+li.list_view_element {
   float:left;
   clear:left;
   
-  max-width: 480px;
+  padding-bottom: 6px;
+  width: 480px;
 }
 
-a[class^='headline'] {
+a.headline {
   font-weight: bold;
   font-size: 16px;
   color: #036dbe;
 }
 
-div[class^='thumb_'] {
+div.headline_container {
+  margin-left: 140px;
+  width: 340px;
+}
+
+img.thumb {
   float:left;
   max-width: 135px;
 }
 
-#headline a {
+*#categories {
+  font-size: 14px;
+  color:#444444;
+  
+  padding-bottom: 8px;
+}
+
+*.thumb {
+  color:white;
+  border: 2px solid;
+  
+  -moz-box-shadow: 3px 3px 4px #000;
+  -webkit-box-shadow: 3px 3px 4px #000;
+
+  box-shadow: 3px 3px 4px #000;
+
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+}
+
+#headline * {
   font-size: 16px;
   color:#036dbe;
 }
 
-#datetime {
+*#datetime {
   font-size: 14px;
   color: #444444;
 }
 
-#top_links li {
+*#top_links * {
   display:inline;
   padding-right: 20px;
   margin:5px;
