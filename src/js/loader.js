@@ -238,7 +238,7 @@ loader.handle_dates_headline_position = function() {
     }
   } else {
     if(headline_position.top < date_position.top) {
-      jQuery("#datetime").after(jQuery("#story_headling"));
+      jQuery("#datetime").after(jQuery("#story_headline"));
     }
   }
 }
